@@ -1,0 +1,12 @@
+1. gunakan gambar fisheye
+2. buat menjadi panoramic
+3. buat agar bisa di zoom
+4. deteksi objeck (mobil/motor) dan deteksi plat lalu crop sesuai ukuran plat menggunakan ml
+
+	## problem motor karena motor tidak menggunakan gate dan langsung masuk
+	## apakah perlu dideteksi juga?
+
+5. olah gambar plat menggunakan image processing
+
+
+6. menghitung jumlah mobil 
