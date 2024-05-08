@@ -1,5 +1,6 @@
 from src.plugin_interface import PluginInterface
-from PyQt6.QtWidgets import QWidget
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import QWidget, QMessageBox
 from .ui_main import Ui_Form
 import cv2
 
@@ -11,29 +12,61 @@ class Controller(QWidget):
         self.ui.setupUi(self)
         self.model = model
         self.image = None
+        self.x = 0
         self.set_stylesheet()
 
     def set_stylesheet(self):
         # This is set up style label on bonding box ui
-        self.ui.label_6.setStyleSheet(self.model.style_label())
+        self.ui.label_7.setStyleSheet(self.model.style_label())
         self.ui.label_8.setStyleSheet(self.model.style_label())
-        self.ui.label_9.setStyleSheet(self.model.style_label())
         self.ui.label_10.setStyleSheet(self.model.style_label())
-        self.ui.label_11.setStyleSheet(self.model.style_label())
-        self.ui.label_12.setStyleSheet(self.model.style_label())
+        self.ui.label_9.setStyleSheet(self.model.style_label())
         self.ui.label_13.setStyleSheet(self.model.style_label())
+        self.ui.label_14.setStyleSheet(self.model.style_label())
 
-        self.ui.cam_fisheye.setStyleSheet(self.model.style_label())
-        self.ui.cam_panorama.setStyleSheet(self.model.style_label())
-        self.ui.cam_gate_in.setStyleSheet(self.model.style_label())
-        self.ui.cam_gate_out.setStyleSheet(self.model.style_label())
-        self.ui.img_plate.setStyleSheet(self.model.style_label())
-        self.ui.zoom.setStyleSheet(self.model.style_label())
+        self.ui.vidio_fisheye.setStyleSheet(self.model.style_label())
+        self.ui.vidio_pano.setStyleSheet(self.model.style_label())
+        self.ui.Gate_In.setStyleSheet(self.model.style_label())
+        self.ui.Gate_Out.setStyleSheet(self.model.style_label())
+        self.ui.img_plat.setStyleSheet(self.model.style_label())
 
-        self.ui.btn_load.setStyleSheet(self.model.style_pushbutton())
-        self.ui.btn_clear.setStyleSheet(self.model.style_pushbutton())
+        self.ui.btn_save.setStyleSheet(self.model.style_pushbutton())
+        self.ui.btn_stop.setStyleSheet(self.model.style_pushbutton())
+        self.ui.btn_setmode.setStyleSheet(self.model.style_pushbutton())
+        self.ui.btn_start.setStyleSheet(self.model.style_pushbutton())
 
-        self.ui.btn_load.clicked.connect(self.load_img)
+        self.ui.btn_start.clicked.connect(self.load_img)
+
+        self.ui.frame_4.setStyleSheet(self.model.style_frame_main())
+        self.ui.frame_3.setStyleSheet(self.model.style_frame_main())
+
+        self.ui.frame_12.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_11.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_10.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_5.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_7.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_13.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_15.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_19.setStyleSheet(self.model.style_frame_object())
+        self.ui.frame_14.setMaximumSize(QtCore.QSize(16777215, 23))
+        self.ui.frame_mode1.setMaximumSize(QtCore.QSize(16777215, 23))
+        self.ui.frame_mode1_2.setMaximumSize(QtCore.QSize(16777215, 23))
+        self.ui.frame_mode2.setMaximumSize(QtCore.QSize(16777215, 23))
+        self.ui.frame_mode2_2.setMaximumSize(QtCore.QSize(16777215, 23))
+
+
+
+        # self.ui.spinBox_alpha_1.setStyleSheet(self.model.)
+
+        # self.ui.spinBox_alpha_1.valueChanged.connect(self.tes)
+        # if self.ui.btn_radio_mode1.isChecked():
+        #     QMessageBox.information(self, "tes,", f"aa")
+        # else:
+        #     QMessageBox.information(self, "tes,", f"bb")
+
+    def tes(self):
+        QMessageBox.information(self, "tes,", f"{self.x}")
+        self.x = self.x +1
 
     def load_img(self):
         file = self.model.select_file()
@@ -58,7 +91,7 @@ class Controller(QWidget):
 
 
 
-class CarParking(PluginInterface):
+class ParkingGateSystem(PluginInterface):
     def __init__(self):
         super().__init__()
         self.widget = None
