@@ -1,4 +1,5 @@
 from src.plugin_interface import PluginInterface
+<<<<<<< HEAD
 from PyQt6 import QtCore
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from src.models.model_apps import ModelApps
@@ -6,6 +7,12 @@ from .ui_main import Ui_Form
 import cv2
 
 # from moildev import Moildev
+=======
+from PyQt6.QtWidgets import QWidget
+from .ui_main import Ui_Form
+import cv2
+
+>>>>>>> origin/rega
 
 class Controller(QWidget):
     def __init__(self, model):
@@ -13,14 +20,19 @@ class Controller(QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.model = model
+<<<<<<< HEAD
         self.model_apps = ModelApps()
         # self.moildev = Moildev()
         self.image = None
         self.x = 0
+=======
+        self.image = None
+>>>>>>> origin/rega
         self.set_stylesheet()
 
     def set_stylesheet(self):
         # This is set up style label on bonding box ui
+<<<<<<< HEAD
         self.ui.label_7.setStyleSheet(self.model.style_label())
         self.ui.label_8.setStyleSheet(self.model.style_label())
         self.ui.label_10.setStyleSheet(self.model.style_label())
@@ -132,6 +144,38 @@ class Controller(QWidget):
     def showImg(self):
 
         self.model.show_image_to_label(self.ui.vidio_pano, self.image, 820)
+=======
+        self.ui.label_6.setStyleSheet(self.model.style_label())
+        self.ui.label_8.setStyleSheet(self.model.style_label())
+        self.ui.label_9.setStyleSheet(self.model.style_label())
+        self.ui.label_10.setStyleSheet(self.model.style_label())
+        self.ui.label_11.setStyleSheet(self.model.style_label())
+        self.ui.label_12.setStyleSheet(self.model.style_label())
+        self.ui.label_13.setStyleSheet(self.model.style_label())
+
+        self.ui.cam_fisheye.setStyleSheet(self.model.style_label())
+        self.ui.cam_panorama.setStyleSheet(self.model.style_label())
+        self.ui.cam_gate_in.setStyleSheet(self.model.style_label())
+        self.ui.cam_gate_out.setStyleSheet(self.model.style_label())
+        self.ui.img_plate.setStyleSheet(self.model.style_label())
+        self.ui.zoom.setStyleSheet(self.model.style_label())
+
+        self.ui.btn_load.setStyleSheet(self.model.style_pushbutton())
+        self.ui.btn_clear.setStyleSheet(self.model.style_pushbutton())
+
+        self.ui.btn_load.clicked.connect(self.load_img)
+
+    def load_img(self):
+        file = self.model.select_file()
+        if file:
+            # if file:
+            #     self.image=
+            self.image = cv2.imread(file)
+            self.showImg()
+
+    def showImg(self):
+        self.model.show_image_to_label(self.ui.cam_fisheye, self.image, 250)
+>>>>>>> origin/rega
 
     def load_image(self):
         file = self.model.select_file()
@@ -145,7 +189,11 @@ class Controller(QWidget):
 
 
 
+<<<<<<< HEAD
 class ParkingGateSystem(PluginInterface):
+=======
+class CarParking(PluginInterface):
+>>>>>>> origin/rega
     def __init__(self):
         super().__init__()
         self.widget = None
