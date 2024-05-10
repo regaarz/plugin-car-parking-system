@@ -76,6 +76,12 @@ class Controller(QWidget):
         self.ui.spinBox_beta_4.setRange(-999, 999)
         self.ui.spinBox_x_5.setRange(-999,999)
         self.ui.spinBox_x_6.setRange(-999,999)
+
+        self.ui.spinBox_alpha_6.setRange(-999, 999)
+        self.ui.spinBox_beta_5.setRange(-999, 999)
+        self.ui.spinBox_x_7.setRange(-999, 999)
+        self.ui.spinBox_x_8.setRange(-999, 999)
+
         self.ui.btn_start.clicked.connect(self.start)
 
         # self.ui.spinBox_alpha_1.setStyleSheet(self.model.)
