@@ -1,5 +1,6 @@
 from src.plugin_interface import PluginInterface
 from PyQt6 import QtCore
+from PyQt6.QtGui import QImage, QPixmap
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from src.models.model_apps import ModelApps
 from .ui_main import Ui_Form
@@ -17,6 +18,7 @@ class Controller(QWidget):
         # self.moildev = Moildev()
         self.panorama = None
         self.gate_in = None
+        self.gate_out = None
         self.moildev = None
         self.x = 0
         self.set_stylesheet()
@@ -70,27 +72,36 @@ class Controller(QWidget):
         self.ui.btn_radio_mode1.toggled.connect(self.change_mode)
         self.ui.btn_radio_mode2.toggled.connect(self.change_mode)
 
-        self.ui.spinBox_alpha_4.setRange(-999, 999)
         self.ui.spinBox_alpha_5.setRange(-999,999)
-        self.ui.spinBox_alpha_5.setRange(-999, 999)
+        self.ui.spinBox_beta_4.setRange(-999, 999)
+        self.ui.spinBox_x_5.setRange(-999,999)
+        self.ui.spinBox_x_6.setRange(-999,999)
         self.ui.btn_start.clicked.connect(self.start)
 
         # self.ui.spinBox_alpha_1.setStyleSheet(self.model.)
+        #Spinbox mode 2 Gate_In
         self.ui.spinBox_alpha_5.valueChanged.connect(self.anypoint_mode_2)
         self.ui.spinBox_beta_4.valueChanged.connect(self.anypoint_mode_2)
         self.ui.spinBox_x_5.valueChanged.connect(self.anypoint_mode_2)
         self.ui.spinBox_x_6.valueChanged.connect(self.anypoint_mode_2)
+
+        #Spinbox mode 2 Gate_out
+        self.ui.spinBox_alpha_6.valueChanged.connect(self.anypoint_mode_2)
+        self.ui.spinBox_beta_5.valueChanged.connect(self.anypoint_mode_2)
+        self.ui.spinBox_x_7.valueChanged.connect(self.anypoint_mode_2)
+        self.ui.spinBox_x_8.valueChanged.connect(self.anypoint_mode_2)
 
 
 
     def start(self):
         source_type, cam_type, source_media, parameter_name = self.model.select_media_source()
         self.gate_in = cv2.imread(source_media)
+        self.gate_out = cv2.imread(source_media)
         self.moildev = self.model.connect_to_moildev(parameter_name)
         # self.image = cv2.imread('/home/gritz/Documents/ftdc/moilapp/moilapp-pak-heru/src/fisheye.png')
       #self.image = self.moildev.panorama_car(self.panorama, 180, 80, 0, 0.25, 0.75, 0, 1)
-        self.image = self.moildev.anypoint_mode2(self.gate_in, -90, 0, 0, 1)
-
+        self.image_1 = self.moildev.anypoint_mode2(self.gate_in, -90, 0, 0, 1)
+        self.image_2 = self.moildev.anypoint_mode2(self.gate_in, -90, 0, 0, 1)
         self.showImg()
 
 #  def pano(self):
@@ -106,8 +117,18 @@ class Controller(QWidget):
         roll = self.ui.spinBox_x_5.value()
         zoom = self.ui.spinBox_x_6.value()
         print(f'{pitch, yaw, roll, zoom = }')
-        self.image = self.moildev.anypoint_mode2(self.gate_in, pitch, yaw, roll, zoom)
-        self.showImg()\
+        self.image_1 = self.moildev.anypoint_mode2(self.gate_in, pitch, yaw, roll, zoom)
+
+        pitch_2 = self.ui.spinBox_alpha_6.value()
+        yaw_2 = self.ui.spinBox_beta_5.value()
+        roll_2 = self.ui.spinBox_x_7.value()
+        zoom_2 = self.ui.spinBox_x_8.value()
+        print(f'{pitch_2, yaw_2, roll_2, zoom_2 = }')
+        self.image_2 = self.moildev.anypoint_mode2(self.gate_out, pitch_2, yaw_2, roll_2, zoom_2)
+
+
+
+        self.showImg()
 
     def change_mode(self):
         if self.ui.btn_radio_mode1.isChecked():
@@ -143,7 +164,18 @@ class Controller(QWidget):
         #     self.showImg()
 
     def showImg(self):
-        self.model.show_image_to_label(self.ui.Gate_In, self.image, 400)
+        height, width, channel = self.image_1.shape
+        bytesPerLine = 3 * width
+        qImg_1 = QImage(self.image_1.data, width, height, bytesPerLine, QImage.Format.Format_BGR888)
+        scaled_qImg_1 = qImg_1.scaled(self.ui.Gate_In.width(), self.ui.Gate_In.height())
+        self.ui.Gate_In.setPixmap(QPixmap.fromImage(scaled_qImg_1))
+
+        # Menyiapkan gambar untuk Gate_Out
+        height, width, channel = self.image_2.shape
+        bytesPerLine = 3 * width
+        qImg_2 = QImage(self.image_2.data, width, height, bytesPerLine, QImage.Format.Format_BGR888)
+        scaled_qImg_2 = qImg_2.scaled(self.ui.Gate_Out.width(), self.ui.Gate_Out.height())
+        self.ui.Gate_Out.setPixmap(QPixmap.fromImage(scaled_qImg_2))
 
     def load_image(self):
         file = self.model.select_file()
